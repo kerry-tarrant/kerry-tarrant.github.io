@@ -2,8 +2,17 @@
 
 ## Sections to add
 
-Consider adding a seciton on publications under resume.
-
+Add to resume section.
+* Volunteer experience
+  * Black Hills Works
+* List publications and include link to download pdf
+* Organizations
+  * BHSU Math Club
+  * Hacky Hour
+    * Python notebooks (Automate the Boring Stuff)
+  * Brain Hack of Iowa City
+    * Python boot camp (Software Carpentry)
+    * Establish recognition under UIowa with constititution
 
 ## Ideas
 
