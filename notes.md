@@ -21,6 +21,9 @@ index.html
 
 Site map/ ToC
 
+1. About
+   1. Two sentences
+   1. Links to LinkedIn, Github
 1. Resume/C.V.
    1. Education
    1. Experience
