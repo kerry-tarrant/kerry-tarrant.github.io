@@ -10130,3 +10130,15 @@ section.resume-section .resume-section-content {
 details summary {
   cursor: pointer;
 }
+
+/* Slightly larger base font size */
+body {
+  font-size: 1.05rem;
+}
+
+/* Bump a touch more on desktop */
+@media (min-width: 992px) {
+  body {
+    font-size: 1.1rem;
+  }
+}
