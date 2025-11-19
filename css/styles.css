@@ -10113,16 +10113,17 @@ section.resume-section .resume-section-content {
   }
 }
 .pdf-embed {
-  width: 100%;
-  height: 70vh;       /* scales with screen height */
-  max-height: 900px;  /* looks good on big monitors */
+  display: block;
+  width: 100%;          /* full width of the text column */
+  aspect-ratio: 11 / 8.5;  /* landscape slide-ish */
+  max-height: 90vh;     /* don't exceed the viewport height */
   border: 1px solid #ddd;
 }
 
-/* Slightly shorter on small phones if you want */
+/* On narrow screens, let it be a bit taller so it doesn't look squished */
 @media (max-width: 576px) {
   .pdf-embed {
-    height: 65vh;
+    aspect-ratio: 4 / 5;
   }
 }
 
