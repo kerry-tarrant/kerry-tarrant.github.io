@@ -10112,3 +10112,20 @@ section.resume-section .resume-section-content {
     padding-bottom: 5rem;
   }
 }
+.pdf-embed {
+  width: 100%;
+  height: 70vh;       /* scales with screen height */
+  max-height: 900px;  /* looks good on big monitors */
+  border: 1px solid #ddd;
+}
+
+/* Slightly shorter on small phones if you want */
+@media (max-width: 576px) {
+  .pdf-embed {
+    height: 65vh;
+  }
+}
+
+details summary {
+  cursor: pointer;
+}
