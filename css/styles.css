@@ -10112,31 +10112,31 @@ section.resume-section .resume-section-content {
     padding-bottom: 5rem;
   }
 }
+
+/* PDF DISPLAY INLIINE */
 .pdf-embed {
   display: block;
   width: 100%;          /* full width of the text column */
-  aspect-ratio: 11 / 8.5;  /* landscape slide-ish */
+  /* aspect-ratio: 11 / 8.5;  /* landscape slide-ish */ */
   max-height: 90vh;     /* don't exceed the viewport height */
   border: 1px solid #ddd;
 }
-
 /* On narrow screens, let it be a bit taller so it doesn't look squished */
 @media (max-width: 576px) {
   .pdf-embed {
     aspect-ratio: 4 / 5;
   }
 }
-
 details summary {
   cursor: pointer;
 }
 
+/* FONT ADJUSTMENTS */
 /* Slightly larger base font size */
 body {
   font-size: 1.05rem;
 }
-
-/* Bump a touch more on desktop */
+/* Bump up font a touch more on desktop */
 @media (min-width: 992px) {
   body {
     font-size: 1.1rem;
