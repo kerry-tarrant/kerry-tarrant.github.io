@@ -10117,7 +10117,7 @@ section.resume-section .resume-section-content {
 .pdf-embed {
   display: block;
   width: 100%;          /* full width of the text column */
-  aspect-ratio: 8.5 / 11;  /* landscape slide-ish or letter ratio */
+  aspect-ratio: 11 / 8.5;  /* landscape slide-ish or letter ratio */
   max-height: 90vh;     /* don't exceed the viewport height */
   border: 1px solid #ddd;
 }
