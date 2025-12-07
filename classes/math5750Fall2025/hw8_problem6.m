@@ -28,11 +28,11 @@ n0 = 0.3176;
 y0 = [v0; n0];
 
 %% 1. Phase plane, nullclines, and trajectory for one I_app
-Iapp_pp = 7;   % adjust to explore how the phase plane changes
+Iapp_pp = 6;   % adjust to explore how the phase plane changes
 
 % v-n grid
 vmin = -80; vmax = 120;  nv = 150;
-nmin = 0;   nmax = 1;   nn = 150;
+nmin = 0;   nmax = 1;    nn = 150;
 [v_grid, n_grid] = meshgrid(linspace(vmin, vmax, nv), ...
                             linspace(nmin, nmax, nn));
 
@@ -40,17 +40,19 @@ nmin = 0;   nmax = 1;   nn = 150;
                                  gNa,gK,gL,Cm,vNa,vK,vL, ...
                                  m_inf,alpha_n,beta_n);
 
-figure(1); clf;
-quiver(v_grid, n_grid, vdot, ndot, 0.7, 'k'); hold on;
+figure(1); clf; hold on;
+quiver(v_grid, n_grid, vdot, ndot, 0.7, 'k', ...
+       'DisplayName','vector field');
 xlabel('v (mV)');
 ylabel('n');
 title(sprintf('Slow (v,n) phase plane, I_{app} = %.2f', Iapp_pp));
 box on;
 
 % Nullclines: v-dot = 0 (red), n-dot = 0 (blue)
-contour(v_grid, n_grid, vdot, [0 0], 'r', 'LineWidth', 2);
-contour(v_grid, n_grid, ndot, [0 0], 'b', 'LineWidth', 2);
-legend('vector field','v-nullcline','n-nullcline','Location','best');
+contour(v_grid, n_grid, vdot, [0 0], 'r', 'LineWidth', 2, ...
+        'DisplayName','v-nullcline');
+contour(v_grid, n_grid, ndot, [0 0], 'b', 'LineWidth', 2, ...
+        'DisplayName','n-nullcline');
 
 % Trajectory
 tspan = [0 2000];
@@ -58,9 +60,8 @@ ode_fun = @(t,y) slow_rhs(t,y,Iapp_pp, ...
                           gNa,gK,gL,Cm,vNa,vK,vL, ...
                           m_inf,alpha_n,beta_n);
 [ts, y_traj] = ode15s(ode_fun, tspan, y0);
-
-figure(1);
-plot(y_traj(:,1), y_traj(:,2), 'k', 'LineWidth', 2);   % (v,n) oscillation
+plot(y_traj(:,1), y_traj(:,2), 'k', 'LineWidth', 2, ...
+     'DisplayName','trajectory');
 
 % Time series
 figure(2); clf;
@@ -91,8 +92,9 @@ if exitflag > 0
     v_star = Ystar(1);
     n_star = Ystar(2);
 
-    figure(1);
-    plot(v_star, n_star, 'ko', 'MarkerFaceColor', 'y', 'MarkerSize', 8);
+    figure(1); hold on;
+    plot(v_star, n_star, 'ko', 'MarkerFaceColor', 'y', 'MarkerSize', 8, ...
+         'DisplayName','equilibrium');
 
     % Numerical Jacobian
     J = numerical_jacobian(@(Y) slow_rhs(0,Y,Iapp_pp, ...
@@ -101,11 +103,9 @@ if exitflag > 0
     [V_eig, D_eig] = eig(J);
     lambda = diag(D_eig);
 
-    % Check for saddle (real eigenvalues of opposite sign)
     if all(imag(lambda) == 0) && prod(sign(real(lambda))) < 0
         eps_man = 1e-3;
 
-        % Separate stable and unstable eigenvectors
         [~, i_unst] = max(real(lambda));
         [~, i_stab] = min(real(lambda));
         v_unst = V_eig(:, i_unst);
@@ -119,8 +119,12 @@ if exitflag > 0
                                              gNa,gK,gL,Cm,vNa,vK,vL, ...
                                              m_inf,alpha_n,beta_n), ...
                               tspan_fwd, y_initU);
-            figure(1);
-            plot(yU(:,1), yU(:,2), 'm', 'LineWidth', 2);
+            if s == -1
+                plot(yU(:,1), yU(:,2), 'm', 'LineWidth', 2, ...
+                     'DisplayName','unstable manifolds');
+            else
+                plot(yU(:,1), yU(:,2), 'm', 'LineWidth', 2); % no name
+            end
         end
 
         % Stable manifolds: integrate backward
@@ -131,18 +135,22 @@ if exitflag > 0
                                              gNa,gK,gL,Cm,vNa,vK,vL, ...
                                              m_inf,alpha_n,beta_n), ...
                               tspan_back, y_initS);
-            figure(1);
-            plot(yS(:,1), yS(:,2), 'c', 'LineWidth', 2);
+            if s == -1
+                plot(yS(:,1), yS(:,2), 'c', 'LineWidth', 2, ...
+                     'DisplayName','stable manifolds');
+            else
+                plot(yS(:,1), yS(:,2), 'c', 'LineWidth', 2);
+            end
         end
-
-        legend('vector field','v-nullcline','n-nullcline', ...
-               'trajectory','equilibrium', ...
-               'unstable manifolds','stable manifolds', ...
-               'Location','best');
     else
         fprintf('Equilibrium is not a saddle; skipping 1D manifolds.\n');
     end
 end
+
+% One legend call, uses DisplayName of all plotted objects
+figure(1);
+legend('Location','best');
+
 
 %% 3. Sweep I_app: oscillation threshold and bifurcation diagram
 I_vals = linspace(0, 15, 100);
